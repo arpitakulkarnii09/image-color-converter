@@ -1,183 +1,186 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Virtual Lab - Image Converter</title>
-  <style>
-    body, h1, h2, h3, p {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Lab: Image Color Space Converter</title>
+    <style>
+        body, h1, h2, h3, p {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
 
-    body {
-      background-color: #f4f8fb;
-      color: #1b2a41;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-      min-height: 100vh;
-    }
+        body {
+            background-color: #E3F2FD;
+            color: #0D47A1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            min-height: 100vh;
+        }
 
-    .heading-container {
-      text-align: center;
-      margin-bottom: 30px;
-    }
+        h1 {
+            font-size: 2.5em;
+            color: #0D47A1;
+            margin-bottom: 5px;
+        }
 
-    .main-heading {
-      font-size: 2.8em;
-      color: #0d3b66;
-      margin-bottom: 10px;
-    }
+        h2 {
+            font-size: 1.2em;
+            color: #1976D2;
+            margin-bottom: 25px;
+        }
 
-    .sub-heading {
-      font-size: 1.4em;
-      color: #274c77;
-      font-weight: normal;
-    }
+        form {
+            background-color: #BBDEFB;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
 
-    h2, h3 {
-      color: #274c77;
-    }
+        input[type="file"] {
+            font-size: 1.1em;
+            padding: 10px;
+            background-color: #E3F2FD;
+            border: 2px solid #90CAF9;
+            border-radius: 5px;
+            width: 100%;
+            max-width: 300px;
+            color: #0D47A1;
+        }
 
-    form {
-      background-color: #dde6f2;
-      border-radius: 8px;
-      padding: 20px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      width: 100%;
-      max-width: 600px;
-      margin-bottom: 30px;
-      text-align: center;
-    }
+        button {
+            margin-top: 15px;
+            background-color: #1565C0;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.1em;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-    input[type="file"] {
-      font-size: 1.1em;
-      padding: 10px;
-      background-color: #f4f8fb;
-      border: 2px solid #749bc2;
-      border-radius: 5px;
-      width: 100%;
-      max-width: 300px;
-      color: #1b2a41;
-    }
+        button:hover {
+            background-color: #0D47A1;
+        }
 
-    button {
-      margin-top: 15px;
-      background-color: #1d3557;
-      color: #ffffff;
-      border: none;
-      padding: 10px 20px;
-      font-size: 1.1em;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
+        #output-section {
+            display: none; /* Hide by default */
+            width: 100%;
+            max-width: 800px;
+        }
 
-    button:hover {
-      background-color: #457b9d;
-    }
+        #result {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 40px;
+        }
 
-    #result {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 20px;
-      margin-top: 40px;
-      width: 100%;
-      max-width: 800px;
-    }
+        #result img {
+            max-width: 300px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
 
-    #result img {
-      max-width: 300px;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-    }
+        #original-img {
+            max-width: 100%;
+            max-height: 500px;
+            width: auto;
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
 
-    #original-img {
-      max-width: 100%;
-      max-height: 500px;
-      width: auto;
-      height: auto;
-      margin-bottom: 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-    }
+        .image-container {
+            width: 100%;
+            max-width: 300px;
+            text-align: center;
+        }
 
-    .image-container {
-      width: 100%;
-      max-width: 300px;
-      text-align: center;
-    }
+        .image-container img {
+            margin-bottom: 10px;
+        }
 
-    .image-container img {
-      margin-bottom: 10px;
-    }
-
-    .image-container h3 {
-      margin-bottom: 5px;
-      font-size: 1.2em;
-      color: #1b2a41;
-    }
-  </style>
+        .image-container h3 {
+            margin-bottom: 5px;
+            font-size: 1.2em;
+            color: #0D47A1;
+        }
+    </style>
 </head>
 <body>
-  <div class="heading-container">
-    <h1 class="main-heading">Image Color Space Converter</h1>
-    <h2 class="sub-heading">Convert RGB to YCrCb, HSV, and LAB</h2>
-  </div>
+    <h1>Virtual Lab: Image Color Space Converter</h1>
+    <h2>Convert RGB Images to HSV, YCrCb, and LAB Color Spaces</h2>
 
-  <form id="upload-form" enctype="multipart/form-data">
-    <input type="file" id="image" name="image" accept="image/*" required>
-    <button type="submit">Upload and Convert</button>
-  </form>
+    <form id="upload-form" enctype="multipart/form-data">
+        <input type="file" id="image" name="image" accept="image/*">
+        <button type="submit">Upload and Convert</button>
+    </form>
 
-  <h2>Original Image</h2>
-  <img id="original-img" alt="Original Image" />
+    <!-- This entire section will be hidden until the image is uploaded -->
+    <div id="output-section">
+        <h2>Original Image</h2>
+        <img id="original-img" alt="Original Image">
 
-  <div id="result">
-    <div class="image-container">
-      <h3>YCrCb</h3>
-      <img id="ycrcb-img" alt="YCrCb Image" />
+        <div id="result">
+            <div class="image-container">
+                <h3>YCrCb</h3>
+                <img id="ycrcb-img" alt="YCrCb Image">
+            </div>
+            <div class="image-container">
+                <h3>HSV</h3>
+                <img id="hsv-img" alt="HSV Image">
+            </div>
+            <div class="image-container">
+                <h3>LAB</h3>
+                <img id="lab-img" alt="LAB Image">
+            </div>
+        </div>
     </div>
-    <div class="image-container">
-      <h3>HSV</h3>
-      <img id="hsv-img" alt="HSV Image" />
-    </div>
-    <div class="image-container">
-      <h3>LAB</h3>
-      <img id="lab-img" alt="LAB Image" />
-    </div>
-  </div>
 
-  <script>
-    document.getElementById('upload-form').addEventListener('submit', function (event) {
-      event.preventDefault();
-      let formData = new FormData();
-      const fileInput = document.getElementById('image');
-      if (!fileInput.files.length) return;
+    <script>
+        document.getElementById('upload-form').addEventListener('submit', function (event) {
+            event.preventDefault();
+            const fileInput = document.getElementById('image');
+            if (fileInput.files.length === 0) {
+                alert("Please select an image file first.");
+                return;
+            }
 
-      formData.append('image', fileInput.files[0]);
+            let formData = new FormData();
+            formData.append('image', fileInput.files[0]);
 
-      fetch('/upload', {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => response.json())
-      .then(data => {
-        let reader = new FileReader();
-        reader.onload = function (event) {
-          document.getElementById('original-img').src = event.target.result;
-        };
-        reader.readAsDataURL(fileInput.files[0]);
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Show the output section
+                document.getElementById('output-section').style.display = 'block';
 
-        document.getElementById('ycrcb-img').src = 'data:image/png;base64,' + data.ycrcb;
-        document.getElementById('hsv-img').src = 'data:image/png;base64,' + data.hsv;
-        document.getElementById('lab-img').src = 'data:image/png;base64,' + data.lab;
-      });
-    });
-  </script>
+                // Display original image
+                let reader = new FileReader();
+                reader.onload = function (event) {
+                    document.getElementById('original-img').src = event.target.result;
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+
+                // Set the converted image results
+                document.getElementById('ycrcb-img').src = 'data:image/png;base64,' + data.ycrcb;
+                document.getElementById('hsv-img').src = 'data:image/png;base64,' + data.hsv;
+                document.getElementById('lab-img').src = 'data:image/png;base64,' + data.lab;
+            });
+        });
+    </script>
 </body>
 </html>
